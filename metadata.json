@@ -1,0 +1,8 @@
+{
+  "name": "Owner's Report",
+  "description": "Property Owner Operating Performance Dashboard for Mr. Ahmed Al Turki",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
