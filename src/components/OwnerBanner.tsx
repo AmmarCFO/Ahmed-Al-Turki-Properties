@@ -157,8 +157,8 @@ export const OwnerBanner: React.FC<OwnerBannerProps> = ({
               {isAr ? 'متوسط نسبة الإشغال' : 'Avg. Occupancy'}
             </p>
             <p className="text-xl sm:text-2xl font-black text-emerald-400 mt-0.5 flex items-center gap-1">
-              95.8%
-              <TrendingUp className="w-4 h-4 text-emerald-400 animate-bounce" />
+              38%
+              <TrendingUp className="w-4 h-4 text-emerald-400" />
             </p>
           </motion.div>
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Globe, Building2, LayoutDashboard, BarChart3, Calculator, Printer } from 'lucide-react';
+import { Globe, Building2, LayoutDashboard, BarChart3, Printer } from 'lucide-react';
 import { logoUrl, ownerProfile } from '../data';
 import { ViewTab } from '../types';
 
@@ -107,23 +107,6 @@ export const Header: React.FC<HeaderProps> = ({
             <BarChart3 className="w-3.5 h-3.5 text-[#B8865F]" />
             <span>{isAr ? 'المؤشرات والتحليلات' : 'Analytics'}</span>
           </button>
-
-          <button
-            onClick={() => setViewTab('calculator')}
-            className={`relative z-10 flex items-center gap-1.5 text-xs font-bold px-3.5 py-2 rounded-xl transition-colors ${
-              viewTab === 'calculator' ? 'text-[#1d1d1f]' : 'text-[#8B6F47] hover:text-[#1d1d1f]'
-            }`}
-          >
-            {viewTab === 'calculator' && (
-              <motion.div
-                layoutId="activeHeaderTab"
-                className="absolute inset-0 bg-white rounded-xl border border-[#EDE5DC] shadow-xs -z-10"
-                transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-              />
-            )}
-            <Calculator className="w-3.5 h-3.5 text-[#B8865F]" />
-            <span>{isAr ? 'حاسبة الأرباح' : 'Yield Calculator'}</span>
-          </button>
         </div>
 
         {/* Right Actions */}
@@ -177,15 +160,6 @@ export const Header: React.FC<HeaderProps> = ({
           }`}
         >
           {isAr ? 'المؤشرات' : 'Analytics'}
-        </button>
-
-        <button
-          onClick={() => setViewTab('calculator')}
-          className={`flex-shrink-0 text-xs font-bold px-3 py-1.5 rounded-xl transition-colors ${
-            viewTab === 'calculator' ? 'bg-[#8B6F47] text-white shadow-xs' : 'text-[#8B6F47] bg-white border border-[#EDE5DC]'
-          }`}
-        >
-          {isAr ? 'الحاسبة' : 'Calculator'}
         </button>
       </div>
     </header>

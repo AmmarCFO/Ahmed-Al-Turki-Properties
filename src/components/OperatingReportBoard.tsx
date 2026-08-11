@@ -20,8 +20,10 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
   onAddOwnerNote,
   onSelectPrintReport
 }) => {
-  // Store expanded report IDs
-  const [expandedReportIds, setExpandedReportIds] = useState<string[]>([reports[0]?.id || '']);
+  // Store expanded report IDs (open by default)
+  const [expandedReportIds, setExpandedReportIds] = useState<string[]>(
+    reports.map((r) => r.id)
+  );
   
   // Filter state
   const [selectedFilter, setSelectedFilter] = useState<'all' | '2026' | '2025'>('all');
@@ -280,55 +282,127 @@ export const OperatingReportBoard: React.FC<OperatingReportBoardProps> = ({
                     transition={{ duration: 0.3, ease: 'easeOut' }}
                     className="p-6 sm:p-8 space-y-6 bg-white"
                   >
-                    {/* Financial Summary Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 bg-[#FAF7F2] p-5 rounded-2xl border border-[#EDE5DC]">
+                    {/* Tagline & Owner Metadata Header */}
+                    <div className="bg-gradient-to-r from-[#1d1d1f] via-[#2a2622] to-[#121110] text-white p-4 sm:p-5 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 border border-[#C89565]/40 shadow-xs relative overflow-hidden">
+                      <motion.div
+                        animate={{ x: ['-100%', '200%'] }}
+                        transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+                        className="absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-[#C89565]/20 to-transparent skew-x-12 pointer-events-none"
+                      />
+                      <div>
+                        <span className="text-[10px] font-extrabold text-[#C89565] uppercase tracking-widest block">
+                          {isAr ? 'بيانات التقرير والعقار' : 'Property & Report Overview'}
+                        </span>
+                        <h4 className="text-base sm:text-lg font-black text-[#F3E5D8]">
+                          {report.branchName[isAr ? 'ar' : 'en']}
+                        </h4>
+                        <p className="text-xs text-[#E0C9B1] italic font-medium mt-0.5">
+                          "{report.tagline ? report.tagline[isAr ? 'ar' : 'en'] : (isAr ? 'بيتك، راحتك وطمأنينتك' : 'Your home, comfort and peace of mind')}"
+                        </p>
+                      </div>
+                      <div className="text-left sm:text-right">
+                        <span className="text-[11px] text-stone-300 block font-semibold">
+                          {isAr ? 'المالك / العميل:' : 'Owner / Client:'} <span className="text-[#E0C9B1] font-bold">{report.clientName ? report.clientName[isAr ? 'ar' : 'en'] : (isAr ? 'السيد ميسون إبراهيم' : 'Mr. Maisoon Ibrahim')}</span>
+                        </span>
+                        <span className="text-[11px] text-stone-400 block font-mono mt-0.5">
+                          {isAr ? 'فترة التقرير:' : 'Period:'} {report.periodName[isAr ? 'ar' : 'en']}
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* Detailed Operating Metrics Grid (Context of Mathwaa 57) */}
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+                      <div className="bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#EDE5DC]">
+                        <span className="text-[10px] font-bold text-stone-500 uppercase block">
+                          {isAr ? 'عدد الوحدات / الإشغال' : 'Units / Occupancy'}
+                        </span>
+                        <p className="text-sm sm:text-base font-extrabold text-[#1d1d1f] mt-1">
+                          {report.totalUnits} {isAr ? 'وحدات' : 'Units'} <span className="text-xs font-bold text-emerald-600">({report.occupancyRate}%)</span>
+                        </p>
+                      </div>
+
+                      <div className="bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#EDE5DC]">
+                        <span className="text-[10px] font-bold text-stone-500 uppercase block">
+                          {isAr ? 'إجمالي العقود المبرمة' : 'Total Contracts'}
+                        </span>
+                        <p className="text-sm sm:text-base font-extrabold text-[#1d1d1f] mt-1">
+                          {(report.totalContracts || 20225.91).toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-[10px] text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
+                        </p>
+                      </div>
+
+                      <div className="bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#EDE5DC]">
+                        <span className="text-[10px] font-bold text-stone-500 uppercase block">
+                          {isAr ? 'إجمالي الإيرادات' : 'Total Revenue'}
+                        </span>
+                        <p className="text-sm sm:text-base font-black text-[#1d1d1f] mt-1">
+                          {report.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-[10px] text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
+                        </p>
+                      </div>
+
+                      <div className="bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#EDE5DC]">
+                        <span className="text-[10px] font-bold text-stone-500 uppercase block">
+                          {isAr ? 'متوسط العائد الشهري' : 'Avg. Monthly Return'}
+                        </span>
+                        <p className="text-sm sm:text-base font-extrabold text-stone-700 mt-1">
+                          {(report.avgMonthlyReturn || 7026.27).toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-[10px] text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
+                        </p>
+                      </div>
+
+                      <div className="bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#EDE5DC]">
+                        <span className="text-[10px] font-bold text-stone-500 uppercase block">
+                          {isAr ? 'المصاريف المباشرة / الرأسمالية' : 'Direct / Capital Exp.'}
+                        </span>
+                        <p className="text-xs sm:text-sm font-bold text-stone-700 mt-1">
+                          <span className="text-amber-800">{(report.directExpenses || 727.76).toLocaleString(undefined, { minimumFractionDigits: 2 })}</span> / <span className="text-stone-400">{isAr ? '0.00 (لا يوجد)' : 'Nil'}</span>
+                        </p>
+                      </div>
+
+                      <div className="bg-[#FAF7F2] p-3.5 rounded-2xl border border-[#EDE5DC]">
+                        <span className="text-[10px] font-bold text-stone-500 uppercase block">
+                          {isAr ? `حصة المشغل (${report.operatorSharePercentage}%)` : `Operator Share (${report.operatorSharePercentage}%)`}
+                        </span>
+                        <p className="text-sm sm:text-base font-extrabold text-stone-700 mt-1">
+                          {report.operatorShareAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-[10px] text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Financial Summary Highlight Banner */}
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-[#FAF7F2] p-5 rounded-2xl border border-[#EDE5DC]">
                       <div className="space-y-1">
                         <span className="text-xs font-semibold text-stone-500 block">
-                          {isAr ? 'إجمالي دخل العقار' : 'Gross Property Revenue'}
+                          {isAr ? 'إجمالي دخل العقار للفترة' : 'Gross Property Revenue'}
                         </span>
                         <p className="text-xl font-black text-[#1d1d1f]">
-                          {report.totalRevenue.toLocaleString()} <span className="text-xs font-normal text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
+                          {report.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-xs font-normal text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
                         </p>
                         <span className="text-[11px] text-stone-500 block">
-                          {isAr ? `طاقة العقار: ${report.occupiedUnits} من أصل ${report.totalUnits} وحدة مشغولة` : `Occupied: ${report.occupiedUnits} of ${report.totalUnits} units`}
+                          {isAr ? `تضمن 3 وحدات بـ حي السهمان بنسبة إشغال ${report.occupancyRate}%` : `3 Units in Al-Sahman District at ${report.occupancyRate}% Occupancy`}
                         </span>
                       </div>
 
                       <div className="space-y-1 border-t md:border-t-0 md:border-r md:border-l border-[#EDE5DC] pt-3 md:pt-0 md:px-4">
                         <span className="text-xs font-semibold text-stone-500 block">
-                          {isAr ? `خصم حصة المشغل (${report.operatorSharePercentage}%)` : `Less Operator Fee (${report.operatorSharePercentage}%)`}
+                          {isAr ? `استقطاع حصة المشغل (${report.operatorSharePercentage}%)` : `Less Operator Share (${report.operatorSharePercentage}%)`}
                         </span>
                         <p className="text-xl font-bold text-stone-700">
-                          - {report.operatorShareAmount.toLocaleString()} <span className="text-xs font-normal text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
+                          - {report.operatorShareAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-xs font-normal text-stone-500">{isAr ? 'ريال' : 'SAR'}</span>
                         </p>
                         <span className="text-[11px] text-emerald-700 font-medium block">
-                          {isAr ? 'يشمل التشغيل والصيانة والتسويق' : 'Covers operations, maintenance & marketing'}
+                          {isAr ? 'شامل الإدارة والتشغيل والحلول العقارية' : 'Includes management, operations & hospitality'}
                         </span>
                       </div>
 
-                      <div className="space-y-1 bg-white p-3.5 rounded-xl border border-[#C89565]/40 shadow-xs relative overflow-hidden">
+                      <div className="space-y-1 bg-white p-3.5 rounded-xl border border-[#C89565]/60 shadow-xs relative overflow-hidden">
                         <span className="text-xs font-extrabold text-[#8B6F47] block">
-                          {isAr ? 'الصافي المحول للمالك' : 'Net Disbursed to Owner'}
+                          {isAr ? 'صافي العائد المستحق النهائي للمالك' : 'Net Return to Client'}
                         </span>
                         <p className="text-2xl font-black text-[#B8865F]">
-                          {report.netToOwner.toLocaleString()} <span className="text-xs font-normal text-stone-600">{isAr ? 'ريال' : 'SAR'}</span>
+                          {report.netToOwner.toLocaleString(undefined, { minimumFractionDigits: 2 })} <span className="text-xs font-normal text-stone-600">{isAr ? 'ريال' : 'SAR'}</span>
                         </p>
-                        <span className="text-[11px] text-stone-500 block font-mono">
-                          {isAr ? `نسبة الهامش الصافي: ${((report.netToOwner / report.totalRevenue) * 100).toFixed(1)}%` : `Net Margin: ${((report.netToOwner / report.totalRevenue) * 100).toFixed(1)}%`}
+                        <span className="text-[11px] text-[#8B6F47] block font-semibold">
+                          {isAr ? 'حالة الحوالة: تم تحويل الصافي المالي بالكامل' : 'Payout Status: Net return transferred in full'}
                         </span>
-                      </div>
-
-                      <div className="space-y-1 text-xs text-stone-600 flex flex-col justify-center">
-                        <div className="flex items-center gap-1.5 font-semibold text-[#1d1d1f]">
-                          <CreditCard className="w-4 h-4 text-[#B8865F]" />
-                          <span>{isAr ? 'الحساب البنكي:' : 'Bank Account:'}</span>
-                        </div>
-                        <p className="font-mono text-[11px] text-stone-700 bg-white p-1.5 rounded-lg border border-[#EDE5DC]">
-                          {report.bankAccount}
-                        </p>
-                        <p className="text-[10px] text-stone-500">
-                          {isAr ? `المرجع: ${report.payoutRef} (${report.payoutDate})` : `Ref: ${report.payoutRef} (${report.payoutDate})`}
-                        </p>
                       </div>
                     </div>
 

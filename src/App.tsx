@@ -5,7 +5,6 @@ import { OwnerBanner } from './components/OwnerBanner';
 import { OperatingReportBoard } from './components/OperatingReportBoard';
 import { BranchOverview } from './components/BranchOverview';
 import { PerformanceChart } from './components/PerformanceChart';
-import { BudgetCalculator } from './components/BudgetCalculator';
 import { ReportPrintModal } from './components/ReportPrintModal';
 import { ViewTab, OperatingReport } from './types';
 import { branchesList, initialOperatingReports, ownerProfile } from './data';
@@ -13,7 +12,7 @@ import { branchesList, initialOperatingReports, ownerProfile } from './data';
 export default function App() {
   const [isAr, setIsAr] = useState<boolean>(true);
   const [viewTab, setViewTab] = useState<ViewTab>('board');
-  const [selectedBranchId, setSelectedBranchId] = useState<string>('malqa-5');
+  const [selectedBranchId, setSelectedBranchId] = useState<string>('sahman-57');
   
   // Dynamic State for Operating Reports
   const [reports, setReports] = useState<OperatingReport[]>(initialOperatingReports);
@@ -29,7 +28,7 @@ export default function App() {
     document.documentElement.lang = isAr ? 'ar' : 'en';
   }, [isAr]);
 
-  // Handler for Ahmed Al Turki to add a custom owner note to any report
+  // Handler for owner to add a custom owner note to any report
   const handleAddOwnerNote = (reportId: string, noteText: string) => {
     setReports((prev) =>
       prev.map((rep) => {
@@ -81,6 +80,9 @@ export default function App() {
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.2 }}
             >
+              {/* Financial Yield & Occupancy Analytics (Duplicated on Reports Board) */}
+              <PerformanceChart isAr={isAr} reports={reports} />
+
               {/* Branch Quick Showcase */}
               <BranchOverview
                 isAr={isAr}
@@ -112,7 +114,7 @@ export default function App() {
                 setSelectedBranchId={setSelectedBranchId}
               />
             </motion.div>
-          ) : viewTab === 'analytics' ? (
+          ) : (
             <motion.div
               key="analytics"
               initial={{ opacity: 0, y: 10 }}
@@ -121,16 +123,6 @@ export default function App() {
               transition={{ duration: 0.2 }}
             >
               <PerformanceChart isAr={isAr} reports={reports} />
-            </motion.div>
-          ) : (
-            <motion.div
-              key="calculator"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.2 }}
-            >
-              <BudgetCalculator isAr={isAr} />
             </motion.div>
           )}
         </AnimatePresence>

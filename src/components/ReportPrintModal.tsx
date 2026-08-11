@@ -96,43 +96,71 @@ export const ReportPrintModal: React.FC<ReportPrintModalProps> = ({
 
               <div>
                 <span className="text-[11px] font-bold text-[#8B6F47] uppercase block">
-                  {isAr ? 'بيانات العقار والفرع:' : 'Property & Branch Details:'}
+                  {isAr ? 'بيانات العقار والتقرير:' : 'Property & Report Details:'}
                 </span>
                 <p className="text-base font-extrabold text-[#1d1d1f] mt-0.5">
                   {branchTitle}
                 </p>
-                <p className="text-xs text-stone-600">{report.periodName[isAr ? 'ar' : 'en']} ({report.quarter})</p>
+                <p className="text-xs text-stone-600 font-semibold">{report.periodName[isAr ? 'ar' : 'en']}</p>
+                <p className="text-[11px] text-[#B8865F] font-bold italic mt-0.5">
+                  "{report.tagline ? report.tagline[isAr ? 'ar' : 'en'] : (isAr ? 'بيتك، راحتك وطمأنينتك' : 'Your home, comfort and peace of mind')}"
+                </p>
               </div>
             </div>
 
             {/* Statement Line Item Breakdown Table */}
             <div>
               <h2 className="text-xs font-extrabold text-[#8B6F47] uppercase tracking-wider mb-2">
-                {isAr ? 'جدول المحاسبة المالية والتوزيعات' : 'Financial Accounting & Distribution Table'}
+                {isAr ? 'جدول الميزانية والتوزيعات التشغيلية المفصلة' : 'Detailed Financial Statement & Operational Accounting'}
               </h2>
               <table className="w-full text-xs border-collapse border border-[#EDE5DC]">
                 <thead>
                   <tr className="bg-[#1d1d1f] text-white text-right">
                     <th className="p-3 font-bold border border-stone-800">{isAr ? 'البند التشغيلي' : 'Line Item'}</th>
-                    <th className="p-3 font-bold border border-stone-800">{isAr ? 'التفاصيل / القيمة' : 'Details / Value'}</th>
+                    <th className="p-3 font-bold border border-stone-800">{isAr ? 'التفاصيل والوصف' : 'Details & Description'}</th>
                     <th className="p-3 font-bold border border-stone-800 text-left">{isAr ? 'المبلغ (ريال)' : 'Amount (SAR)'}</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr className="border-b border-[#EDE5DC]">
-                    <td className="p-3 font-bold">{isAr ? 'إجمالي إيراد العقار الفعلي' : 'Gross Property Revenue'}</td>
-                    <td className="p-3">{isAr ? `إشغال ${report.occupancyRate}% (${report.occupiedUnits}/${report.totalUnits} وحدة)` : `Occupancy ${report.occupancyRate}%`}</td>
-                    <td className="p-3 font-extrabold text-left">{report.totalRevenue.toLocaleString()}</td>
+                    <td className="p-3 font-bold">{isAr ? 'الوحدات ونسبة الإشغال' : 'Property Units & Occupancy Rate'}</td>
+                    <td className="p-3">{isAr ? `تضم المنشأة 3 وحدات سكنية بنسبة إشغال ${report.occupancyRate}%` : `3 units with ${report.occupancyRate}% occupancy rate`}</td>
+                    <td className="p-3 font-extrabold text-left">{report.occupancyRate}%</td>
                   </tr>
                   <tr className="border-b border-[#EDE5DC] bg-[#FAF7F2]">
-                    <td className="p-3 font-bold">{isAr ? `خصم حصة المشغل الإدارية (${report.operatorSharePercentage}%)` : `Less Operator Fee (${report.operatorSharePercentage}%)`}</td>
-                    <td className="p-3">{isAr ? 'شامل خدمات النظافة والتشغيل والصيانة' : 'Includes housekeeping, operations & maintenance'}</td>
-                    <td className="p-3 font-bold text-stone-700 text-left">- {report.operatorShareAmount.toLocaleString()}</td>
+                    <td className="p-3 font-bold">{isAr ? 'إجمالي قيم العقود المبرمة' : 'Total Rental Contracts'}</td>
+                    <td className="p-3">{isAr ? 'مجموع العقود الموثقة خلال الفترة' : 'Sum of executed lease contracts'}</td>
+                    <td className="p-3 font-extrabold text-left">{report.totalContracts?.toLocaleString(undefined, { minimumFractionDigits: 2 }) || '20,225.91'}</td>
+                  </tr>
+                  <tr className="border-b border-[#EDE5DC]">
+                    <td className="p-3 font-bold">{isAr ? 'إجمالي إيراد الفترة الفعلي' : 'Total Revenue for Period'}</td>
+                    <td className="p-3">{isAr ? 'شمل التدفقات والإيرادات الفعلية المحصلة' : 'Total realized operational revenue'}</td>
+                    <td className="p-3 font-black text-[#1d1d1f] text-left">{report.totalRevenue.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
+                  </tr>
+                  <tr className="border-b border-[#EDE5DC] bg-[#FAF7F2]">
+                    <td className="p-3 font-bold text-stone-700">{isAr ? 'متوسط العائد الشهري' : 'Average Monthly Return'}</td>
+                    <td className="p-3">{isAr ? 'معدل الدخل الشهري المتحقق للعقار' : 'Average realized monthly performance'}</td>
+                    <td className="p-3 font-bold text-stone-700 text-left">{report.avgMonthlyReturn?.toLocaleString(undefined, { minimumFractionDigits: 2 }) || '7,026.27'}</td>
+                  </tr>
+                  <tr className="border-b border-[#EDE5DC]">
+                    <td className="p-3 font-bold text-amber-900">{isAr ? 'المصاريف المباشرة' : 'Direct Expenses'}</td>
+                    <td className="p-3">{isAr ? 'مصاريف التشغيل المباشرة للفترة' : 'Operational direct expenses'}</td>
+                    <td className="p-3 font-bold text-amber-800 text-left">- {report.directExpenses?.toLocaleString(undefined, { minimumFractionDigits: 2 }) || '727.76'}</td>
+                  </tr>
+                  <tr className="border-b border-[#EDE5DC] bg-[#FAF7F2]">
+                    <td className="p-3 font-bold text-stone-600">{isAr ? 'المصاريف الرأسمالية' : 'Capital Expenses'}</td>
+                    <td className="p-3">{isAr ? 'لا يوجد مصاريف رأسمالية (Nil)' : 'Nil (No capital expenditure)'}</td>
+                    <td className="p-3 font-bold text-stone-500 text-left">0.00</td>
+                  </tr>
+                  <tr className="border-b border-[#EDE5DC]">
+                    <td className="p-3 font-bold text-[#8B6F47]">{isAr ? `حصة المشغل (${report.operatorSharePercentage}%)` : `Operator Share (${report.operatorSharePercentage}%)`}</td>
+                    <td className="p-3">{isAr ? 'مقابل الإدارة والتشغيل والخدمات (25%)' : 'Operator management & operations fee (25%)'}</td>
+                    <td className="p-3 font-bold text-stone-700 text-left">- {report.operatorShareAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</td>
                   </tr>
                   <tr className="bg-[#FAF7F2] font-black text-sm border-t-2 border-[#1d1d1f]">
-                    <td className="p-4 text-[#8B6F47]">{isAr ? 'الصافي النهائي المستحق والمحول لحساب المالك' : 'Net Final Amount Transferred to Owner'}</td>
-                    <td className="p-4 text-xs font-mono font-normal text-stone-600">{report.bankAccount}</td>
-                    <td className="p-4 text-[#B8865F] text-left text-base">{report.netToOwner.toLocaleString()} SAR</td>
+                    <td className="p-4 text-[#8B6F47]">{isAr ? 'صافي العائد المستحق النهائي للمالك' : 'Net Return to Client (Owner)'}</td>
+                    <td className="p-4 text-xs font-normal text-stone-600">{isAr ? 'تم تحويل الصافي المالي بالكامل للمالك' : 'Net payout transferred in full to owner'}</td>
+                    <td className="p-4 text-[#B8865F] text-left text-base">{report.netToOwner.toLocaleString(undefined, { minimumFractionDigits: 2 })} SAR</td>
                   </tr>
                 </tbody>
               </table>
@@ -156,9 +184,9 @@ export const ReportPrintModal: React.FC<ReportPrintModalProps> = ({
               </div>
 
               <div>
-                <p className="font-bold text-[#8B6F47]">{isAr ? 'اعتماد المالك (Ahmed Al Turki):' : 'Owner Approval:'}</p>
+                <p className="font-bold text-[#8B6F47]">{isAr ? `اعتماد المالك (${ownerName}):` : `Owner Approval (${ownerName}):`}</p>
                 <div className="h-12 border-b border-dashed border-stone-300 mt-2 flex items-end pb-1">
-                  <span className="text-[10px] text-stone-400 font-mono">Ahmed Al Turki</span>
+                  <span className="text-[10px] text-stone-400 font-mono">{ownerName}</span>
                 </div>
               </div>
             </div>

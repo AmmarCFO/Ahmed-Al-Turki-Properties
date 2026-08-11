@@ -55,23 +55,30 @@ export interface RevenueCategory {
 
 export interface OperatingReport {
   id: string;
-  reportNumber: string; // e.g. "REP-2026-07"
-  periodKey: string;    // e.g. "2026-07"
-  periodName: LocalizedString; // e.g. "July 2026" / "يوليو 2026"
-  quarter: string;      // "Q3 2026"
+  reportNumber: string; // e.g. "REP-01" or "1"
+  periodKey: string;    // e.g. "2026-Q2-Q3"
+  periodName: LocalizedString; // e.g. "25 Apr 2026 to 31 Jul 2026"
+  periodDates?: LocalizedString;
+  quarter: string;      // "Q2-Q3 2026"
   year: number;         // 2026
-  branchId: string;     // e.g. "malqa-5"
-  branchName: LocalizedString; // e.g. "Mathwaa 5: Al Malqa"
+  branchId: string;     // e.g. "sahman-57"
+  branchName: LocalizedString; // e.g. "Mathwaa 57: Al-Sahman District"
+  tagline?: LocalizedString;
+  clientName?: LocalizedString;
   
   // Core Required Metrics
-  occupancyRate: number;
-  totalRevenue: number;
-  operatorSharePercentage: number;
-  operatorShareAmount: number;
-  netToOwner: number;
+  occupancyRate: number; // 38%
+  totalContracts?: number; // 20225.91
+  totalRevenue: number; // 22484.09
+  avgMonthlyReturn?: number; // 7026.27
+  directExpenses?: number; // 727.76
+  capitalExpenses?: number; // 0.00
+  operatorSharePercentage: number; // 25%
+  operatorShareAmount: number; // 5056.47
+  netToOwner: number; // 14441.67
 
   // Rich Breakdown
-  totalUnits: number;
+  totalUnits: number; // 3
   occupiedUnits: number;
   adr: number;
   revPar: number;
@@ -90,4 +97,4 @@ export interface OperatingReport {
   additionalRemarks?: ReportNote[];
 }
 
-export type ViewTab = 'board' | 'branches' | 'analytics' | 'calculator';
+export type ViewTab = 'board' | 'branches' | 'analytics';
