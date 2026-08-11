@@ -207,6 +207,11 @@ export const BranchOverview: React.FC<BranchOverviewProps> = ({
                 src={selectedBranch.photos[activePhotoIndex]}
                 alt={`${selectedBranch.name.en} photo ${activePhotoIndex + 1}`}
                 className="w-full h-full object-cover cursor-pointer"
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  // Fallback image if needed
+                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80';
+                }}
                 onClick={() => setLightboxOpen(true)}
               />
             </AnimatePresence>
@@ -259,6 +264,10 @@ export const BranchOverview: React.FC<BranchOverviewProps> = ({
                   src={photo}
                   alt={`Thumbnail ${index + 1}`}
                   className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=600&q=80';
+                  }}
                 />
               </motion.button>
             ))}
@@ -293,6 +302,10 @@ export const BranchOverview: React.FC<BranchOverviewProps> = ({
                 src={selectedBranch.photos[activePhotoIndex]}
                 alt="Enlarged Branch View"
                 className="w-full h-full object-contain bg-black"
+                referrerPolicy="no-referrer"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=1200&q=80';
+                }}
               />
 
               <button

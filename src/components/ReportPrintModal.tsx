@@ -59,7 +59,7 @@ export const ReportPrintModal: React.FC<ReportPrintModalProps> = ({
             <div className="flex items-start justify-between border-b-2 border-[#1d1d1f] pb-6">
               <div className="flex items-center gap-4">
                 <div className="w-16 h-16 rounded-2xl bg-[#FAF7F2] p-2 border border-[#EDE5DC]">
-                  <img src={logoUrl} alt="Mathwaa" className="w-full h-full object-contain" />
+                  <img src={logoUrl} alt="Mathwaa" className="w-full h-full object-contain" referrerPolicy="no-referrer" />
                 </div>
                 <div>
                   <h1 className="text-xl font-extrabold text-[#1d1d1f]">
